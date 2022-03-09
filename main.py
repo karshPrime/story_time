@@ -19,7 +19,7 @@ async def on_ready():
 # COMMANDS
 @client.event
 async def on_message(message):
-  prefix = "bot"
+  prefix = "spcc"
   story_channel = 123456789    ## replace with your story channel's id
   bot_id = 123456789           ## replace with your bot's user id
 
@@ -44,6 +44,14 @@ async def on_message(message):
           await channel.send(f"> {story_text[0:i]}")
           story_text = story_text[i:]
         await channel.send(f"> {story_text}")
+  
+    else:
+      if message.author.id != bot_id:
+        with open ("messages.txt", "a") as story:
+          story.write(f"{content} ")
+          story.close()
+          print(content)
+    
 
   else: 
     pass
