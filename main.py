@@ -20,7 +20,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
   prefix = "bot"
-  story_channel = 123456789 # enter your channel id
+  story_channel = 123456789    ## replace with your story channel's id
+  bot_id = 123456789           ## replace with your bot's user id
 
   channel = message.channel
   content = str(message.content).lower()
@@ -29,9 +30,23 @@ async def on_message(message):
   # will only store user message if the message is posted in story channel 
   if channel.id == story_channel:
     if content in [f"{prefix} story so far", f"{prefix} story"]:
-        pass
-    else:
-        pass
+      with open ("messages.txt", "r") as story:
+        story_text = story.read()
+        story.close()
 
+        await channel.send("**Story So far:**")
+
+        # divide story in different messages to overcome message size limit
+        while len(story_text) > 2000:
+          i = 1999
+          while story_text[i] != " ":
+            i -= 1
+          await channel.send(f"> {story_text[0:i]}")
+          story_text = story_text[i:]
+        await channel.send(f"> {story_text}")
+
+  else: 
+    pass
 
 client.run("token")
+ 
